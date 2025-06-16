@@ -389,10 +389,13 @@ const validateCurrentPage = () => {
   for (const question of page.questions) {
     if (question.attrs.required) {
       const answer = answers[question.name];
-      if (!answer || (Array.isArray(answer) && answer.length === 0)) {
-        ElMessage.error(`请回答问题：${question.title}`);
-        return false;
+      if(question.type !== 'MatrixChoice') {
+        if (!answer || (Array.isArray(answer) && answer.length === 0)) {
+          ElMessage.error(`请回答问题：${question.title}`);
+          return false;
+        }
       }
+
 
       // 验证多选题的最小/最大选择数
       if (question.type === 'MultipleChoice') {
