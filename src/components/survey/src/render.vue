@@ -1,11 +1,24 @@
 <template>
   <div class="survey-container">
     <!-- 问卷标题 -->
-    <div class="survey-header">
-      <h1 class="survey-title">{{ survey.title }}</h1>
-      <p v-if="survey.description" class="survey-description">
-        {{ survey.description }}
-      </p>
+    <div class="survey-header flex gap-2 justify-between">
+      <div class="title-wrapper">
+
+        <h1 class="survey-title">{{ survey.title }}</h1>
+        <p v-if="survey.description" class="survey-description">
+          {{ survey.description }}
+        </p>
+      </div>
+      <!-- 页面标题 -->
+      <div
+        v-if="survey.settings.showPageTitles && currentPage.title"
+        class="page-header"
+      >
+        <h2 class="page-title">{{ currentPage.title }}</h2>
+        <p v-if="currentPage.description" class="page-description">
+          {{ currentPage.description }}
+        </p>
+      </div>
     </div>
 
     <!-- 进度条 -->
@@ -23,17 +36,6 @@
 
     <!-- 当前页面 -->
     <div v-if="currentPage" class="page-container">
-      <!-- 页面标题 -->
-      <div
-        v-if="survey.settings.showPageTitles && currentPage.title"
-        class="page-header"
-      >
-        <h2 class="page-title">{{ currentPage.title }}</h2>
-        <p v-if="currentPage.description" class="page-description">
-          {{ currentPage.description }}
-        </p>
-      </div>
-
       <!-- 问题列表 -->
       <div class="questions-container">
         <div
@@ -63,7 +65,7 @@
             <template v-if="question.type === 'SingleChoice'">
               <el-radio-group
                 v-model="answers[question.name]"
-                class="items-start"
+                class="!items-start"
                 :class="getRadioGroupClass(question)"
                 :size="getComponentSize"
               >
@@ -485,12 +487,16 @@ onUnmounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
-  background-color: #fff;
+  background-color: white;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 问卷标题区域 */
 .survey-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -508,7 +514,7 @@ onUnmounted(() => {
 
 /* 进度条区域 */
 .progress-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   padding: 1rem;
   background-color: #f9fafb;
   border-radius: 8px;
@@ -527,11 +533,15 @@ onUnmounted(() => {
 
 /* 页面容器 */
 .page-container {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 1rem;
 }
 
 .page-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .page-title {
@@ -720,8 +730,8 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 3rem;
-  padding-top: 2rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
   border-top: 1px solid #e5e7eb;
 }
 
